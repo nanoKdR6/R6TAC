@@ -34,9 +34,9 @@ var r   = parseInt(color.substring(1,3), 16);
 var g = parseInt(color.substring(3,5), 16);
 var b  = parseInt(color.substring(5,7), 16);
 
-// eraser always bigger than pen
+// Make eraser strokes thicker
 if (ctx.globalCompositeOperation === 'destination-out') {
-  w = w*4;
+  w *= 8;
 }
 
 // 描画
