@@ -108,7 +108,7 @@ body {
 .icon {
   width: 30px;
   height: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 255, 0, 0.7);
 }
 
 .gadget {
@@ -119,6 +119,21 @@ body {
 .barricade {
   width: 20px;
   height: 30px;
+}
+
+.c4 {
+  width: 20px;
+  height: 30px;
+}
+
+.mute {
+  width: 25px;
+  height: 20px;
+}
+
+.goyo {
+  width: 20px;
+  height: 25px;
 }
 
 /* 攻撃側ガジェット位置決め */
@@ -526,6 +541,198 @@ body {
 }
 
 .ovblock_slot span {
+  display: inline-block;
+  margin: 10px 5px;
+  color: white;
+  font-size: 12px;
+}
+
+.rotation_slot {
+  width: 70px;
+  height: 90px;
+  position: absolute;
+  top: 75px;
+  left: 740px;
+  border: 2px solid white;
+  text-align: center;
+}
+
+.rotation {
+  position: absolute;
+  top: 125px;
+  left: 763px;
+  border: 2px solid rgb(0, 255, 128);
+}
+
+.rotation_slot span {
+  display: inline-block;
+  margin: 10px 5px;
+  color: white;
+  font-size: 12px;
+}
+
+.mute_slot {
+  width: 70px;
+  height: 90px;
+  position: absolute;
+  top: 75px;
+  left: 825px;
+  border: 2px solid white;
+  text-align: center;
+}
+
+.mute {
+  position: absolute;
+  top: 125px;
+  left: 848px;
+  border: 2px solid rgb(255, 0, 0);
+}
+
+.mute_slot span {
+  display: inline-block;
+  margin: 10px 5px;
+  color: white;
+  font-size: 12px;
+}
+
+.jager_slot {
+  width: 70px;
+  height: 90px;
+  position: absolute;
+  top: 75px;
+  left: 910px;
+  border: 2px solid white;
+  text-align: center;
+}
+
+.jager {
+  position: absolute;
+  top: 125px;
+  left: 933px;
+  border: 2px solid rgb(255, 255, 0);
+}
+
+.jager_slot span {
+  display: inline-block;
+  margin: 10px 5px;
+  color: white;
+  font-size: 12px;
+}
+
+.valk_slot {
+  width: 70px;
+  height: 90px;
+  position: absolute;
+  top: 75px;
+  left: 995px;
+  border: 2px solid white;
+  text-align: center;
+}
+
+.valk {
+  position: absolute;
+  top: 125px;
+  left: 1018px;
+  border: 2px solid rgb(0, 255, 255);
+}
+
+.valk_slot span {
+  display: inline-block;
+  margin: 10px 5px;
+  color: white;
+  font-size: 12px;
+}
+
+.goyo_slot {
+  width: 70px;
+  height: 90px;
+  position: absolute;
+  top: 75px;
+  left: 1080px;
+  border: 2px solid white;
+  text-align: center;
+}
+
+.goyo {
+  position: absolute;
+  top: 125px;
+  left: 1103px;
+  border: 2px solid rgb(0, 255, 0);
+}
+
+.goyo_slot span {
+  display: inline-block;
+  margin: 10px 5px;
+  color: white;
+  font-size: 12px;
+}
+
+.melusi_slot {
+  width: 70px;
+  height: 90px;
+  position: absolute;
+  top: 75px;
+  left: 1165px;
+  border: 2px solid white;
+  text-align: center;
+}
+
+.melusi {
+  position: absolute;
+  top: 125px;
+  left: 1188px;
+  border: 2px solid rgb(0, 0, 255);
+}
+
+.melusi_slot span {
+  display: inline-block;
+  margin: 10px 5px;
+  color: white;
+  font-size: 12px;
+}
+
+.azami_slot {
+  width: 70px;
+  height: 90px;
+  position: absolute;
+  top: 75px;
+  left: 1250px;
+  border: 2px solid white;
+  text-align: center;
+}
+
+.azami {
+  position: absolute;
+  top: 125px;
+  left: 1273px;
+  border: 2px solid rgb(255, 0, 255);
+}
+
+.azami_slot span {
+  display: inline-block;
+  margin: 10px 5px;
+  color: white;
+  font-size: 12px;
+}
+
+.wire_slot {
+  width: 70px;
+  height: 90px;
+  position: absolute;
+  top: -30px;
+  left: 825px;
+  border: 2px solid white;
+  text-align: center;
+}
+
+.wire {
+  position: absolute;
+  top: 15px;
+  left: 848px;
+  border: 2px solid rgb(255, 255, 0);
+}
+
+.wire_slot span {
   display: inline-block;
   margin: 10px 5px;
   color: white;
@@ -950,9 +1157,9 @@ input[name="tab_item"] {
 #bankb1:checked~#bankb1,
 #border2f:checked~#border2f,
 #border1f:checked~#border1f,
-#cafe3f:checked~#cafe3f,
-#cafe2f:checked~#cafe2f,
-#cafe1f:checked~#cafe1f,
+#kafe3f:checked~#kafe3f,
+#kafe2f:checked~#kafe2f,
+#kafe1f:checked~#kafe1f,
 #club2f:checked~#club2f,
 #club1f:checked~#club1f,
 #clubb1:checked~#clubb1,
@@ -1013,9 +1220,12 @@ input[name="tab_item"] {
 #yacht2fb:checked~#yacht2fb,
 #yacht1fa:checked~#yacht1fa,
 #yacht1fb:checked~#yacht1fb,
-#lab2f:checked~#lab2f,
-#lab1f:checked~#lab1f,
-#labb1:checked~#labb1 {
+#labs2f:checked~#labs2f,
+#labs1f:checked~#labs1f,
+#labsb1:checked~#labsb1,
+#lair2f:checked~#lair2f,
+#lair1f:checked~#lair1f,
+#lairb1:checked~#lairb1 {
   display: block;
 }
 
@@ -1423,12 +1633,12 @@ label {
   left: 685px;
 }
 
-#brava {
+#grim {
   top: 105px;
   left: 10px;
 }
 
-#grim {
+#brava {
   top: 105px;
   left: 55px;
 }
@@ -1449,11 +1659,21 @@ label {
 }
 
 #sentry {
-  top: 278px;
+  top: 110px;
   left: 145px;
 }
 
 #striker {
   top: 105px;
   left: 190px;
+}
+
+#skopos {
+  top: 110px;
+  left: 190px;
+}
+
+#rauora {
+  top: 105px;
+  left: 235px;
 }

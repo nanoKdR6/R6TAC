@@ -1,3 +1,3 @@
-## R6TAC_E36 Update Version
+## R6TAC_nanoKd_Y10S1 Update Version
 
-[Original By axzewindow](https://github.com/axzewindow/tace36.github.io)
+[Original By s3min141](https://github.com/s3min141/R6TAC)
