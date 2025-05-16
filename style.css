@@ -1146,6 +1146,7 @@ input[name="tab_item"] {
 }
 
 /*選択されているタブのコンテンツのみを表示*/
+#opGadget:checked~#opGadget,
 #bank2f:checked~#bank2f,
 #bank1f:checked~#bank1f,
 #bankb1:checked~#bankb1,
