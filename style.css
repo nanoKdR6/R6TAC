@@ -112,34 +112,44 @@ body {
 }
 
 .gadget {
+  width: 25px;
+  height: 25px;
+}
+
+.traxstingers {
+  width: 30px;
+  height: 30px;
+}
+
+.hive {
   width: 30px;
   height: 30px;
 }
 
 .barricade {
-  width: 25px;
-  height: 35px;
+  width: 20px;
+  height: 30px;
 }
 
 .c4 {
-  width: 25px;
-  height: 35px;
+  width: 20px;
+  height: 30px;
 }
 
 .jammer {
-  height: 25px;
-}
-
-.bandit {
   height: 20px;
 }
 
+.bandit {
+  height: 15px;
+}
+
 .trap {
-  height: 25px;
+  height: 20px;
 }
 
 .goyo {
-  width: 25px;
+  width: 20px;
 }
 
 /* 攻撃側ガジェット位置決め */
@@ -162,8 +172,10 @@ body {
 
 .drone {
   position: absolute;
-  top: 45px;
-  left: 763px;
+  /* top: 45px;
+  left: 763px; */
+  top: 10px; 
+  left: 10px;
   border: 2px solid rgb(255, 0, 0);
 }
 
@@ -179,8 +191,10 @@ body {
 
 .bleaching {
   position: absolute;
-  top: 45px;
-  left: 848px;
+  /* top: 45px;
+  left: 848px; */
+  top: 10px; 
+  left: 50px;
   border: 2px solid rgb(255, 255, 0);
 }
 
@@ -203,8 +217,10 @@ body {
 
 .claymore {
   position: absolute;
-  top: 45px;
-  left: 933px;
+  /* top: 45px;
+  left: 933px; */
+  top: 10px; 
+  left: 90px;
   border: 2px solid rgb(0, 255, 255);
 }
 
@@ -227,8 +243,10 @@ body {
 
 .smoke {
   position: absolute;
-  top: 45px;
-  left: 1018px;
+  /* top: 45px;
+  left: 1018px; */
+  top: 10px; 
+  left: 130px;
   border: 2px solid rgb(0, 255, 0);
 }
 
@@ -251,8 +269,10 @@ body {
 
 .grenade {
   position: absolute;
-  top: 45px;
-  left: 1103px;
+  /* top: 45px;
+  left: 1103px; */
+  top: 10px; 
+  left: 170px;
   border: 2px solid rgb(0, 0, 255);
 }
 
@@ -275,8 +295,10 @@ body {
 
 .flash {
   position: absolute;
-  top: 45px;
-  left: 1188px;
+  /* top: 45px;
+  left: 1188px; */
+  top: 10px; 
+  left: 210px;
   border: 2px solid rgb(255, 0, 255);
 }
 
@@ -299,8 +321,10 @@ body {
 
 .hardbleaching {
   position: absolute;
-  top: 45px;
-  left: 1273px;
+  /* top: 45px;
+  left: 1273px; */
+  top: 10px; 
+  left: 250px;
   border: 2px solid rgb(0, 255, 128);
 }
 
@@ -323,8 +347,10 @@ body {
 
 .diffuser {
   position: absolute;
-  top: 45px;
-  left: 1358px;
+  /* top: 45px;
+  left: 1358px; */
+  top: 10px; 
+  left: 250px;
   border: 2px solid rgb(255, 155, 0);
 }
 
@@ -333,6 +359,51 @@ body {
   margin: 10px 5px;
   color: white;
   font-size: 11px;
+}
+
+.attack_gadget_slot {
+  width: 665px;
+  height: 90px;
+  position: absolute;
+  top: 0px;
+  left: 740px;
+  border: 2px solid white;
+  text-align: center;
+}
+
+.airjab {
+  position: absolute;
+  top: 10px; 
+  left: 290px;
+  border: 2px solid rgb(0, 255, 128);
+}
+
+.traxstingers {
+  position: absolute;
+  top: 10px; 
+  left: 330px;
+  border: 2px solid rgb(255, 0, 0);
+}
+
+.argus {
+  position: absolute;
+  top: 10px; 
+  left: 370px;
+  border: 2px solid rgb(255, 255, 0);
+}
+
+.osa {
+  position: absolute;
+  top: 10px; 
+  left: 410px;
+  border: 2px solid rgb(0, 255, 255);
+}
+
+.hive {
+  position: absolute;
+  top: 10px; 
+  left: 450px;
+  border: 2px solid rgb(0, 255, 0);
 }
 
 /* 防衛側ガジェット位置決め */
@@ -377,7 +448,7 @@ body {
   /* top: 15px;
   left: 848px; */
   top: -15px; 
-  left: 795px;
+  left: 790px;
   border: 2px solid rgb(255, 255, 0);
 }
 
@@ -403,7 +474,7 @@ body {
   /* top: 15px;
   left: 933px; */
   top: -15px; 
-  left: 840px;
+  left: 830px;
   border: 2px solid rgb(0, 255, 255);
 }
 
@@ -430,7 +501,7 @@ body {
   /* top: 15px;
   left: 1018px; */
   top: -15px; 
-  left: 885px;
+  left: 870px;
   border: 2px solid rgb(0, 255, 0);
 }
 
@@ -456,7 +527,7 @@ body {
   /* top: 15px;
   left: 1103px; */
   top: -15px; 
-  left: 930px;
+  left: 910px;
   border: 2px solid rgb(0, 0, 255);
 }
 
@@ -482,7 +553,7 @@ body {
   /* top: 15px;
   left: 1188px; */
   top: -15px; 
-  left: 975px;
+  left: 950px;
   border: 2px solid rgb(255, 0, 255);
 }
 
@@ -508,7 +579,7 @@ body {
   /* top: 15px;
   left: 1273px; */
   top: -15px; 
-  left: 1020px;
+  left: 990px;
   border: 2px solid rgb(0, 255, 128);
 }
 
@@ -534,7 +605,7 @@ body {
   /* top: 15px;
   left: 1360px; */
   top: -15px; 
-  left: 1065px;
+  left: 1030px;
   border: 2px solid rgb(255, 155, 0);
 }
 
@@ -582,154 +653,155 @@ body {
 .rotation {
   position: absolute;
   top: -15px; 
-  left: 1110px;
+  left: 1070px;
   border: 2px solid rgb(0, 255, 128);
 }
 
 .jammer {
   position: absolute;
+  height: 20px;
   top: -15px; 
-  left: 1155px;
+  left: 1110px;
   border: 2px solid rgb(255, 0, 0);
 }
 
 .castle {
   position: absolute;
   top: -15px; 
-  left: 1200px;
+  left: 1150px;
   border: 2px solid rgb(255, 255, 0);
 }
 
 .ads {
   position: absolute;
   top: -15px; 
-  left: 1245px;
+  left: 1190px;
   border: 2px solid rgb(0, 255, 255);
 }
 
 .bandit {
   position: absolute;
   top: -15px; 
-  left: 1290px;
+  left: 1230px;
   border: 2px solid rgb(0, 255, 0);
 }
 
 .trap {
   position: absolute;
   top: -15px; 
-  left: 1335px;
+  left: 1270px;
   border: 2px solid rgb(0, 0, 255);
 }
 
 .valk {
   position: absolute;
-  top: 35px; 
-  left: 750px;
+  top: -15px; 
+  left: 1310px;
   border: 2px solid rgb(255, 0, 255);
 }
 
 .echo {
   position: absolute;
-  top: 35px; 
-  left: 795px;
+  top: -15px; 
+  left: 1350px;
   border: 2px solid rgb(0, 255, 128);
 }
 
 .mirror {
   position: absolute;
   top: 35px; 
-  left: 840px;
+  left: 750px;
   border: 2px solid rgb(255, 155, 0);
 }
 
 .lesion {
   position: absolute;
   top: 35px; 
-  left: 885px;
+  left: 790px;
   border: 2px solid rgb(155, 0, 255);
 }
 
 .grzmot {
   position: absolute;
   top: 35px; 
-  left: 930px;
+  left: 830px;
   border: 2px solid rgb(255, 0, 0);
 }
 
 .maestro {
   position: absolute;
   top: 35px; 
-  left: 975px;
+  left: 870px;
   border: 2px solid rgb(255, 255, 0);
 }
 
 .kaid {
   position: absolute;
   top: 35px; 
-  left: 1020px;
+  left: 910px;
   border: 2px solid rgb(0, 255, 255);
 }
 
 .pest {
   position: absolute;
   top: 35px; 
-  left: 1065px;
+  left: 950px;
   border: 2px solid rgb(0, 255, 0);
 }
 
 .goyo {
   position: absolute;
   top: 35px; 
-  left: 1110px;
+  left: 990px;
   border: 2px solid rgb(0, 0, 255);
 }
 
 .disc {
   position: absolute;
   top: 35px; 
-  left: 1155px;
+  left: 1030px;
   border: 2px solid rgb(255, 0, 255);
 }
 
 .banshee {
   position: absolute;
   top: 35px; 
-  left: 1200px;
+  left: 1070px;
   border: 2px solid rgb(0, 255, 128);
 }
 
 .laser {
   position: absolute;
   top: 35px; 
-  left: 1245px;
+  left: 1110px;
   border: 2px solid rgb(255, 0, 0);
 }
 
 .kona {
   position: absolute;
   top: 35px; 
-  left: 1290px;
+  left: 1150px;
   border: 2px solid rgb(255, 255, 0);
 }
 
 .thorn {
   position: absolute;
   top: 35px; 
-  left: 1335px;
+  left: 1190px;
   border: 2px solid rgb(0, 255, 255);
 }
 
 .kiba {
   position: absolute;
-  top: 85px;
-  left: 750px;
+  top: 35px;
+  left: 1230px;
   border: 2px solid rgb(0, 255, 0);
 }
 
 .fenrir {
   position: absolute;
-  top: 85px;
-  left: 795px;
+  top: 35px;
+  left: 1270px;
   border: 2px solid rgb(0, 0, 255);
 }
 
@@ -1146,7 +1218,6 @@ input[name="tab_item"] {
 }
 
 /*選択されているタブのコンテンツのみを表示*/
-#opGadget:checked~#opGadget,
 #bank2f:checked~#bank2f,
 #bank1f:checked~#bank1f,
 #bankb1:checked~#bankb1,

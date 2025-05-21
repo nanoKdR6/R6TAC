@@ -36,7 +36,7 @@ var b  = parseInt(color.substring(5,7), 16);
 
 // Make eraser strokes thicker
 if (ctx.globalCompositeOperation === 'destination-out') {
-  w *= 10;
+  w *= 8;
 }
 
 // 描画
