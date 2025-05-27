@@ -371,39 +371,46 @@ body {
   text-align: center;
 }
 
-.airjab {
+.emp {
   position: absolute;
-  top: 10px; 
+  top: 10px;
   left: 330px;
   border: 2px solid rgb(0, 255, 128);
 }
 
-.traxstingers {
+.airjab {
   position: absolute;
-  top: 10px; 
+  top: 10px;
   left: 370px;
   border: 2px solid rgb(255, 0, 0);
 }
 
-.argus {
+.traxstingers {
   position: absolute;
-  top: 10px; 
+  top: 10px;
   left: 410px;
   border: 2px solid rgb(255, 255, 0);
 }
 
-.osa {
+.argus {
   position: absolute;
-  top: 10px; 
+  top: 10px;
   left: 450px;
   border: 2px solid rgb(0, 255, 255);
 }
 
-.hive {
+.osa {
   position: absolute;
-  top: 10px; 
+  top: 10px;
   left: 490px;
   border: 2px solid rgb(0, 255, 0);
+}
+
+.hive {
+  position: absolute;
+  top: 10px;
+  left: 530px;
+  border: 2px solid rgb(0, 0, 255);
 }
 
 /* 防衛側ガジェット位置決め */
