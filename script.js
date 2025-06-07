@@ -650,103 +650,103 @@ const templates = {
     'placeholder': { name: '-- Select a Map --', url: 'https://placehold.co/900x506/e0e0e0/555555?text=Load+Image+or+Drag+Here' },
     map1: {
         name: 'Bank 2F',
-        url: './img/map/bank_2f.jpg'
+        url: './img/map/bank_2f.webp'
     },
     map2: {
         name: 'Bank 1F',
-        url: './img/map/bank_1f.jpg'
+        url: './img/map/bank_1f.webp'
     },
     map3: {
         name: 'Bank B1',
-        url: './img/map/bank_b1.jpg'
+        url: './img/map/bank_b1.webp'
     },
     map4: {
         name: 'Border 2F',
-        url: './img/map/border_2f.jpg'
+        url: './img/map/border_2f.webp'
     },
     map5: {
         name: 'Border 1F',
-        url: './img/map/border_1f.jpg'
+        url: './img/map/border_1f.webp'
     },
     map6: {
         name: 'Chalet 2F',
-        url: './img/map/chalet_2f.jpg'
+        url: './img/map/chalet_2f.webp'
     },
     map7: {
         name: 'Chalet 1F',
-        url: './img/map/chalet_1f.jpg'
+        url: './img/map/chalet_1f.webp'
     },
     map8: {
         name: 'Chalet B1',
-        url: './img/map/chalet_b1.jpg'
+        url: './img/map/chalet_b1.webp'
     },
     map9: {
         name: 'Clubhouse 2F',
-        url: './img/map/club_2f.jpg'
+        url: './img/map/club_2f.webp'
     },
     map10: {
         name: 'Clubhouse 1F',
-        url: './img/map/club_1f.jpg'
+        url: './img/map/club_1f.webp'
     },
     map11: {
         name: 'Clubhouse B1',
-        url: './img/map/club_b1.jpg'
+        url: './img/map/club_b1.webp'
     },
     map12: {
         name: 'Consulate 2F',
-        url: './img/map/cons_2f.jpg'
+        url: './img/map/cons_2f.webp'
     },
     map13: {
         name: 'Consulate 1F',
-        url: './img/map/cons_1f.jpg'
+        url: './img/map/cons_1f.webp'
     },
     map14: {
         name: 'Consulate B1',
-        url: './img/map/cons_b1.jpg'
+        url: './img/map/cons_b1.webp'
     },
     map15: {
         name: 'Kafe 3F',
-        url: './img/map/kafe_3f.jpg'
+        url: './img/map/kafe_3f.webp'
     },
     map16: {
         name: 'Kafe 2F',
-        url: './img/map/kafe_2f.jpg'
+        url: './img/map/kafe_2f.webp'
     },
     map17: {
         name: 'Kafe 1F',
-        url: './img/map/kafe_1f.jpg'
+        url: './img/map/kafe_1f.webp'
     },
     map18: {
         name: 'Lair 2F',
-        url: './img/map/lair_2f.jpg'
+        url: './img/map/lair_2f.webp'
     },
     map19: {
         name: 'Lair 1F',
-        url: './img/map/lair_1f.jpg'
+        url: './img/map/lair_1f.webp'
     },
     map20: {
         name: 'Lair B1',
-        url: './img/map/lair_b1.jpg'
+        url: './img/map/lair_b1.webp'
     },
     map21: {
         name: 'Nighthaven Labs 2F',
-        url: './img/map/labs_2f.jpg'
+        url: './img/map/labs_2f.webp'
     },
     map22: {
         name: 'Nighthaven Labs 1F',
-        url: './img/map/labs_1f.jpg'
+        url: './img/map/labs_1f.webp'
     },
     map23: {
         name: 'Nighthaven Labs B1',
-        url: './img/map/labs_b1.jpg'
+        url: './img/map/labs_b1.webp'
     },
     map24: {
         name: 'Skyscraper 2F',
-        url: './img/map/sky_2f.jpg'
+        url: './img/map/sky_2f.webp'
     },
     map25: {
         name: 'Skyscraper 1F',
-        url: './img/map/sky_1f.jpg'
+        url: './img/map/sky_1f.webp'
     }
 };
 
