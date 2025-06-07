@@ -73,11 +73,10 @@ body {
 .dropped-sticker {
     position: absolute;
     cursor: grab;
-    border: 2px solid rgba(0, 255, 0, 0.8); /* Solid white border for stronger contrast */
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(255, 255, 255, 0.5); /* Darker, larger shadow with a more noticeable glow */
+    border: 2px dashed rgba(0, 255, 0, 0.8); /* Solid white border for stronger contrast */
     box-sizing: border-box; /* Include padding/border in element's total width/height */
     z-index: 10; /* Ensure stickers are above drawing canvas */
-    background-color: transparent; /* Make background transparent for visual clarity */
+    background-color: rgba(0, 0, 0, 0.5); /* Darker overlay */
 }
 
 .dropped-sticker:active {
