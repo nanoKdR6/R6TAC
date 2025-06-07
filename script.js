@@ -258,9 +258,12 @@ confirmNoBtn.addEventListener('click', () => {
 });
 
 
-// --- Icon Drag and Drop ---
+// --- Sticker Drag and Drop ---
 
 let draggedStickerOriginal = null; // Represents the sticker being dragged from the tray
+
+const DEFAULT_SIZE = 35; // Size for all stickers
+const OPERATOR_DROPPED_SIZE = 40; // Larger size for dropped operators
 
 // Sticker data with categories for Attacker, Defender, Attacker Gadgets, Defender Gadgets
 const stickerTemplates = [
@@ -411,23 +414,27 @@ function populateStickerTray() {
         stickerDiv.classList.add('sticker-item', 'flex', 'items-center', 'justify-center', 'text-sm', 'font-bold');
         stickerDiv.setAttribute('draggable', 'true');
 
-        if (stickerData.type === 'text') {
-            stickerDiv.textContent = stickerData.text;
-            stickerDiv.style.backgroundColor = stickerData.bgColor;
-            stickerDiv.style.color = stickerData.textColor;
-            stickerDiv.dataset.stickerType = 'text';
-            stickerDiv.dataset.text = stickerData.text;
-        } else if (stickerData.type === 'image') {
-            stickerDiv.style.backgroundImage = `url('${stickerData.url}')`;
-            stickerDiv.dataset.stickerType = 'image';
-            stickerDiv.dataset.imageUrl = stickerData.url;
+        // All stickers in the tray have the same initial size
+        stickerDiv.style.width = `${DEFAULT_SIZE}px`;
+        stickerDiv.style.height = `${DEFAULT_SIZE}px`;
+
+        // Determine the dropped size based on category
+        let droppedSize = DEFAULT_SIZE;
+        
+        if (stickerData.category === 'attacker' || stickerData.category === 'defender') {
+            droppedSize = OPERATOR_DROPPED_SIZE;
         }
+
+        stickerDiv.dataset.droppedSize = droppedSize; // Store dropped size for later use
+        stickerDiv.style.backgroundImage = `url('${stickerData.url}')`;
+        stickerDiv.dataset.stickerType = 'image';
+        stickerDiv.dataset.imageUrl = stickerData.url;
         stickerDiv.dataset.stickerSource = 'tray'; // Identify as original from tray
 
         stickerDiv.addEventListener('dragstart', (e) => {
             draggedStickerOriginal = stickerDiv;
             e.dataTransfer.setData('text/plain', stickerDiv.dataset.stickerType); // Set data for drag
-            e.dataTransfer.setDragImage(stickerDiv, 25, 25); // Set custom drag image
+            e.dataTransfer.setDragImage(stickerDiv, DEFAULT_SIZE / 2, DEFAULT_SIZE / 2); // Center drag image
         });
 
         // Append to the correct category container
@@ -584,14 +591,15 @@ canvasContainer.addEventListener('drop', (e) => {
         const newSticker = document.createElement('div');
         newSticker.classList.add('sticker-item', 'dropped-sticker');
 
+        // Set dropped size from the original sticker's dataset
+        const droppedSize = parseInt(draggedStickerOriginal.dataset.droppedSize);
+        newSticker.style.width = `${droppedSize}px`;
+        newSticker.style.height = `${droppedSize}px`;
+
         // Copy styles/data from the original sticker
-        if (draggedStickerOriginal.dataset.stickerType === 'text') {
-            newSticker.textContent = draggedStickerOriginal.dataset.text;
-            newSticker.style.backgroundColor = draggedStickerOriginal.style.backgroundColor;
-            newSticker.style.color = draggedStickerOriginal.style.color;
-        } else if (draggedStickerOriginal.dataset.stickerType === 'image') {
-            newSticker.style.backgroundImage = draggedStickerOriginal.style.backgroundImage;
-        }
+        newSticker.style.backgroundImage = draggedStickerOriginal.style.backgroundImage;
+        newSticker.dataset.stickerType = 'image'; // Copy dataset attributes for consistency
+        newSticker.dataset.imageUrl = draggedStickerOriginal.dataset.imageUrl;
 
         // Position the sticker at the drop location relative to the container
         const containerRect = canvasContainer.getBoundingClientRect();
