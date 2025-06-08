@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="style.css">
     <!-- Font Awesome (still included as it's a common library, though no longer directly used for trash bin icon) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Material Design Icons CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@6.5.95/css/materialdesignicons.min.css">
 </head>
 <body class="p-4 md:p-8 flex flex-col items-center">
 
@@ -49,13 +51,13 @@
                     </div>
                     <div class="flex gap-2 overflow-y-auto">
                         <button id="penToolBtn" class="flex-1 bg-green-500 text-white py-2 px-4 rounded-md shadow-md hover:bg-green-600 transition duration-300 ease-in-out">
-                            <span class="font-bold">Pen</span>
+                            <i class="mdi mdi-brush text-lg"></i>
                         </button>
                         <button id="arrowToolBtn" class="flex-1 bg-blue-500 text-white py-2 px-4 rounded-md shadow-md hover:bg-blue-600 transition duration-300 ease-in-out">
-                            <span class="font-bold">Arrow</span>
+                            <i class="mdi mdi-arrow-top-right text-lg"></i>
                         </button>
                         <button id="eraserToolBtn" class="flex-1 bg-yellow-500 text-white py-2 px-4 rounded-md shadow-md hover:bg-yellow-600 transition duration-300 ease-in-out">
-                            <span class="font-bold">Eraser</span>
+                            <i class="mdi mdi-eraser text-lg"></i>
                         </button>
                     </div>
                 </div>
