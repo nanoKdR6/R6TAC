@@ -418,20 +418,19 @@ function populateStickerTray() {
         stickerDiv.classList.add('sticker-item', 'flex', 'items-center', 'justify-center', 'text-sm', 'font-bold');
         stickerDiv.setAttribute('draggable', 'true');
 
-        // All stickers in the tray have the same initial size
-        stickerDiv.style.width = `${DEFAULT_SIZE}px`;
-        stickerDiv.style.height = `${DEFAULT_SIZE}px`;
+        let currentDroppedSize;
 
-        // Determine the dropped size based on category
-        let droppedSize = DEFAULT_SIZE;
-        
+        // Determine sizes based on category
         if (stickerData.category === 'attacker' || stickerData.category === 'defender') {
-            droppedSize = OPERATOR_DROPPED_SIZE;
+            currentDroppedSize = OPERATOR_DROPPED_SIZE;
         }
 
-        stickerDiv.dataset.droppedSize = droppedSize; // Store dropped size for later use
-        stickerDiv.style.backgroundImage = `url('${stickerData.url}')`;
+        // Set initial size
+        stickerDiv.style.width = `${DEFAULT_SIZE}px`;
+        stickerDiv.style.height = `${DEFAULT_SIZE}px`;
+        stickerDiv.dataset.droppedSize = currentDroppedSize; // Store dropped size for later use
         stickerDiv.dataset.stickerType = 'image';
+        stickerDiv.style.backgroundImage = `url('${stickerData.url}')`;
         stickerDiv.dataset.imageUrl = stickerData.url;
         stickerDiv.dataset.stickerSource = 'tray'; // Identify as original from tray
 
@@ -599,14 +598,14 @@ canvasContainer.addEventListener('drop', (e) => {
         const droppedSize = parseInt(draggedStickerOriginal.dataset.droppedSize);
         newSticker.style.width = `${droppedSize}px`;
         newSticker.style.height = `${droppedSize}px`;
-
-        // Copy styles/data from the original sticker
         newSticker.style.backgroundImage = draggedStickerOriginal.style.backgroundImage;
-        newSticker.dataset.stickerType = 'image'; // Copy dataset attributes for consistency
+        newSticker.dataset.stickerType = 'image';
         newSticker.dataset.imageUrl = draggedStickerOriginal.dataset.imageUrl;
 
         // Position the sticker at the drop location relative to the container
         const containerRect = canvasContainer.getBoundingClientRect();
+
+        // Use newSticker.offsetWidth/Height as they are now set
         newSticker.style.left = `${e.clientX - containerRect.left - newSticker.offsetWidth / 2}px`;
         newSticker.style.top = `${e.clientY - containerRect.top - newSticker.offsetHeight / 2}px`;
 
