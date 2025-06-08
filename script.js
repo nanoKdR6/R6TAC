@@ -8,6 +8,7 @@ const penThicknessInput = document.getElementById('penThickness');
 const thicknessValueSpan = document.getElementById('thicknessValue');
 const penToolBtn = document.getElementById('penToolBtn');
 const eraserToolBtn = document.getElementById('eraserToolBtn');
+const arrowToolBtn = document.getElementById('arrowToolBtn'); // New: Arrow tool button
 
 const resetDrawingBtn = document.getElementById('resetDrawingBtn');
 const resetIconsBtn = document.getElementById('resetIconsBtn');
@@ -30,8 +31,16 @@ const confirmNoBtn = document.getElementById('confirmNo');
 
 let isDrawing = false;
 let isErasing = false;
-let lastX = 0;
-let lastY = 0;
+let isArrowToolActive = false; // State for arrow tool
+let lastX = 0; // Used for continuous drawing (pen/eraser)
+let lastY = 0; // Used for continuous drawing (pen/eraser)
+
+// New variables for arrow drawing start and current/final end points
+let arrowStartX = 0;
+let arrowStartY = 0;
+let arrowEndX = 0;
+let arrowEndY = 0;
+
 let currentPenColor = penColorInput.value;
 let currentPenThickness = parseInt(penThicknessInput.value);
 
@@ -39,6 +48,9 @@ let droppedStickers = []; // Array to store dropped sticker elements for reset
 
 // Variable to store the function to execute after confirmation
 let pendingResetAction = null;
+
+// Stores the current canvas state for clearing temporary drawings (like arrow previews)
+let canvasState = null;
 
 // --- Utility Functions ---
 
@@ -96,14 +108,40 @@ window.addEventListener('load', resizeCanvas); // Ensure canvas is correctly siz
 // --- Drawing Functionality ---
 
 /**
- * Starts the drawing/erasing operation.
- * @param {MouseEvent} e - The mouse event.
+ * Draws an arrowhead at the end of a line.
+ * @param {CanvasRenderingContext2D} context - The canvas rendering context.
+ * @param {number} fromX - Starting X coordinate of the line.
+ * @param {number} fromY - Starting Y coordinate of the line.
+ * @param {number} toX - Ending X coordinate of the line (where the arrow points).
+ * @param {number} toY - Ending Y coordinate of the line (where the arrow points).
+ * @param {number} arrowHeadSize - Size of the arrowhead.
+ */
+function drawArrowhead(context, fromX, fromY, toX, toY, arrowHeadSize) {
+    context.beginPath();
+    context.moveTo(fromX, fromY);
+    context.lineTo(toX, toY);
+
+    const angle = Math.atan2(toY - fromY, toX - fromX);
+    // Draw the two lines for the arrowhead
+    context.lineTo(toX - arrowHeadSize * Math.cos(angle - Math.PI / 6), toY - arrowHeadSize * Math.sin(angle - Math.PI / 6));
+    context.moveTo(toX, toY); // Move back to the tip
+    context.lineTo(toX - arrowHeadSize * Math.cos(angle + Math.PI / 6), toY - arrowHeadSize * Math.sin(angle + Math.PI / 6));
+    context.stroke();
+}
+
+
+/**
+ * Starts the drawing/erasing/arrow operation.
+ * @param {MouseEvent|TouchEvent} e - The event.
  */
 function startDrawing(e) {
-    // Get mouse coordinates relative to the canvas
+    // Get mouse/touch coordinates relative to the canvas
     const rect = drawingCanvas.getBoundingClientRect();
-    lastX = e.clientX - rect.left;
-    lastY = e.clientY - rect.top;
+    const clientX = e.clientX || e.touches[0].clientX;
+    const clientY = e.clientY || e.touches[0].clientY;
+
+    const currentCanvasX = clientX - rect.left;
+    const currentCanvasY = clientY - rect.top;
 
     // Check if the event target is the canvas itself or a sticker
     if (e.target !== drawingCanvas) {
@@ -113,107 +151,193 @@ function startDrawing(e) {
 
     isDrawing = true;
     ctx.lineWidth = currentPenThickness;
+    ctx.strokeStyle = currentPenColor; // Set color for all drawing types initially
 
-    // Apply drawing/erasing mode
-    if (isErasing) {
-        // Eraser mode: clear content
+    if (isArrowToolActive) {
+        arrowStartX = currentCanvasX; // Store the exact start point for the arrow
+        arrowStartY = currentCanvasY;
+        // Save the current state of the canvas before any temporary arrow preview is drawn
+        // This allows us to clear only the preview without affecting previous drawings.
+        canvasState = ctx.getImageData(0, 0, drawingCanvas.width, drawingCanvas.height);
+    } else if (isErasing) {
         ctx.globalCompositeOperation = 'destination-out'; // This makes new drawing operations transparent
         ctx.strokeStyle = 'rgba(0,0,0,1)'; // Color doesn't matter for destination-out
-        ctx.lineWidth *= 8;
-    } else {
-        // Pen mode: draw with current color
+        ctx.lineWidth = currentPenThickness * 8; // Make eraser thicker
+        ctx.beginPath(); // Start a new path for eraser
+        ctx.moveTo(currentCanvasX, currentCanvasY);
+    } else { // Pen tool
         ctx.globalCompositeOperation = 'source-over'; // Default drawing mode
-        ctx.strokeStyle = currentPenColor;
+        ctx.beginPath(); // Start a new path for pen
+        ctx.moveTo(currentCanvasX, currentCanvasY);
+        lastX = currentCanvasX; // Initialize lastX, lastY for continuous pen drawing
+        lastY = currentCanvasY;
     }
-
-    // Start a new path for drawing
-    ctx.beginPath();
-    ctx.moveTo(lastX, lastY);
 }
 
 /**
- * Continues the drawing/erasing operation.
- * @param {MouseEvent} e - The mouse event.
+ * Continues the drawing/erasing/arrow operation.
+ * @param {MouseEvent|TouchEvent} e - The event.
  */
 function draw(e) {
     if (!isDrawing) return;
 
     const rect = drawingCanvas.getBoundingClientRect();
-    const currentX = e.clientX - rect.left;
-    const currentY = e.clientY - rect.top;
+    const currentCanvasX = (e.clientX || e.touches[0].clientX) - rect.left;
+    const currentCanvasY = (e.clientY || e.touches[0].clientY) - rect.top;
 
-    ctx.lineTo(currentX, currentY);
-    ctx.stroke();
-
-    // For smoother lines, move to the current position after drawing
-    lastX = currentX;
-    lastY = currentY;
+    if (isArrowToolActive) {
+        // Restore canvas to the state before the arrow preview started
+        if (canvasState) {
+            ctx.putImageData(canvasState, 0, 0);
+        }
+        // Draw new temporary arrow preview
+        drawArrowhead(ctx, arrowStartX, arrowStartY, currentCanvasX, currentCanvasY, 15); // 15 is arbitrary arrow head size
+    } else { // Pen or Eraser
+        ctx.lineTo(currentCanvasX, currentCanvasY);
+        ctx.stroke();
+        lastX = currentCanvasX; // Update lastX, lastY for continuous drawing
+        lastY = currentCanvasY;
+    }
 }
 
 /**
- * Ends the drawing/erasing operation.
+ * Ends the drawing/erasing/arrow operation (on mouseup/touchend).
+ * @param {MouseEvent|TouchEvent} e - The event that ended the drawing.
  */
-function stopDrawing() {
+function stopDrawing(e) {
+    if (!isDrawing) return; // Only process if drawing was active
+
+    if (isArrowToolActive) {
+        // Ensure final coordinates are captured from the event that stopped drawing
+        const rect = drawingCanvas.getBoundingClientRect();
+        let finalX = (e.clientX || (e.changedTouches && e.changedTouches[0] && e.changedTouches[0].clientX)) - rect.left;
+        let finalY = (e.clientY || (e.changedTouches && e.changedTouches[0] && e.changedTouches[0].clientY)) - rect.top;
+
+        // Fallback for cases where event might not have final coordinates (e.g., rapid release off canvas)
+        if (isNaN(finalX) || isNaN(finalY)) {
+            finalX = arrowEndX; // Use the last known point from 'draw'
+            finalY = arrowEndY;
+        }
+
+        // Clear the temporary arrow preview before drawing the final one
+        if (canvasState) {
+            ctx.putImageData(canvasState, 0, 0);
+        }
+        // Draw the final arrow with an arrowhead
+        drawArrowhead(ctx, arrowStartX, arrowStartY, finalX, finalY, 15);
+    }
+
     isDrawing = false;
-    // Always reset globalCompositeOperation after drawing to avoid affecting subsequent operations
-    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalCompositeOperation = 'source-over'; // Always reset globalCompositeOperation
+    canvasState = null; // Clear the saved canvas state
+    arrowStartX = 0; // Reset arrow start points
+    arrowStartY = 0;
+    arrowEndX = 0; // Reset arrow end points
+    arrowEndY = 0;
 }
+
+/**
+ * Cancels any ongoing drawing operation (e.g., on mouseout or touchcancel).
+ * This clears temporary previews without drawing a final shape.
+ */
+function cancelDrawing() {
+    if (isDrawing) { // Only do something if a drawing was in progress
+        if (isArrowToolActive && canvasState) {
+            ctx.putImageData(canvasState, 0, 0); // Restore canvas to clear the temporary arrow
+        }
+        isDrawing = false;
+        ctx.globalCompositeOperation = 'source-over'; // Always reset globalCompositeOperation
+        canvasState = null; // Clear the saved canvas state
+        arrowStartX = 0;
+        arrowStartY = 0;
+        arrowEndX = 0;
+        arrowEndY = 0;
+    }
+}
+
 
 // Add drawing event listeners to the drawing canvas
 drawingCanvas.addEventListener('mousedown', startDrawing);
 drawingCanvas.addEventListener('mousemove', draw);
 drawingCanvas.addEventListener('mouseup', stopDrawing);
-drawingCanvas.addEventListener('mouseout', stopDrawing); // Stop drawing if mouse leaves canvas
+drawingCanvas.addEventListener('mouseout', cancelDrawing); // Use cancelDrawing for mouseout
 
 // Handle touch events for drawing
 drawingCanvas.addEventListener('touchstart', (e) => {
     e.preventDefault(); // Prevent scrolling
-    const touch = e.touches[0];
-    startDrawing({ clientX: touch.clientX, clientY: touch.clientY, target: drawingCanvas });
+    startDrawing(e); // Pass the original event object
 }, { passive: false });
 
 drawingCanvas.addEventListener('touchmove', (e) => {
     e.preventDefault(); // Prevent scrolling
-    const touch = e.touches[0];
-    draw({ clientX: touch.clientX, clientY: touch.clientY });
+    draw(e); // Pass the original event object
 }, { passive: false });
 
 drawingCanvas.addEventListener('touchend', stopDrawing);
-drawingCanvas.addEventListener('touchcancel', stopDrawing);
+drawingCanvas.addEventListener('touchcancel', cancelDrawing); // Use cancelDrawing for touchcancel
 
 // --- Tool Controls ---
 
+function setActiveTool(toolBtn, isPen, isEraser, isArrow) {
+    penToolBtn.classList.remove('bg-green-600', 'bg-green-500'); // Remove both potential green classes
+    eraserToolBtn.classList.remove('bg-yellow-600', 'bg-yellow-500'); // Remove both potential yellow classes
+    arrowToolBtn.classList.remove('bg-blue-600', 'bg-blue-500'); // Remove both potential blue classes
+
+    // Set default color for all buttons
+    penToolBtn.classList.add('bg-green-500');
+    eraserToolBtn.classList.add('bg-yellow-500');
+    arrowToolBtn.classList.add('bg-blue-500');
+
+    // Apply active class to the selected tool
+    if (isPen) {
+        penToolBtn.classList.remove('bg-green-500');
+        penToolBtn.classList.add('bg-green-600');
+    } else if (isEraser) {
+        eraserToolBtn.classList.remove('bg-yellow-500');
+        eraserToolBtn.classList.add('bg-yellow-600');
+    } else if (isArrow) {
+        arrowToolBtn.classList.remove('bg-blue-500');
+        arrowToolBtn.classList.add('bg-blue-600');
+    }
+
+
+    isDrawing = false; // Ensure drawing is reset when changing tools
+    isErasing = isEraser;
+    isArrowToolActive = isArrow; // Set arrow tool state
+    canvasState = null; // Clear any active canvas state when tool changes
+    arrowStartX = 0;
+    arrowStartY = 0;
+    arrowEndX = 0;
+    arrowEndY = 0;
+}
+
 penColorInput.addEventListener('input', (e) => {
     currentPenColor = e.target.value;
-    // Ensure pen mode is active when color is changed
-    isErasing = false;
-    penToolBtn.classList.add('bg-green-600');
-    eraserToolBtn.classList.remove('bg-yellow-600');
-    // showInfoMessage('Pen color changed!');
+    setActiveTool(penToolBtn, true, false, false); // Switch to pen when color changes
 });
 
 penThicknessInput.addEventListener('input', (e) => {
     currentPenThickness = parseInt(e.target.value);
     thicknessValueSpan.textContent = `${currentPenThickness}px`;
-    // showInfoMessage(`Pen thickness: ${currentPenThickness}px`);
 });
 
 penToolBtn.addEventListener('click', () => {
-    isErasing = false;
-    penToolBtn.classList.add('bg-green-600');
-    eraserToolBtn.classList.remove('bg-yellow-600');
+    setActiveTool(penToolBtn, true, false, false);
     showInfoMessage('Pen tool selected.');
 });
 
 eraserToolBtn.addEventListener('click', () => {
-    isErasing = true;
-    eraserToolBtn.classList.add('bg-yellow-600');
-    penToolBtn.classList.remove('bg-green-600');
+    setActiveTool(eraserToolBtn, false, true, false);
     showInfoMessage('Eraser tool selected.');
 });
 
+arrowToolBtn.addEventListener('click', () => { // Arrow tool click handler
+    setActiveTool(arrowToolBtn, false, false, true);
+    showInfoMessage('Arrow tool selected.');
+});
+
 // Initialize tool button states
-penToolBtn.classList.add('bg-green-600'); // Pen is default
+setActiveTool(penToolBtn, true, false, false); // Pen is default
 
 // --- Reset Functions ---
 
