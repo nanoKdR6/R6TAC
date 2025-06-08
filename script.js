@@ -347,6 +347,7 @@ const stickerTemplates = [
     // Attacker Gadgets
     { type: 'image', url: './img/gadget/Drone.webp', alt: 'Drone', category: 'attacker_gadget' },
     { type: 'image', url: './img/gadget/HardBreach.webp', alt: 'Hard Breach', category: 'attacker_gadget' },
+    { type: 'image', url: './img/gadget/Rotation.webp', alt: 'Rotation', category: 'attacker_gadget' },
     { type: 'image', url: './img/gadget/Defuser.webp', alt: 'Defuser', category: 'attacker_gadget' },
     { type: 'image', url: './img/gadget/BreachCharge.webp', alt: 'Breach Charge', category: 'attacker_gadget' },
     { type: 'image', url: 'https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/4T4H5EJgUxorucGVtU2pkm/74fef324b89c220ce6426e8097f915b9/Claymore.png', alt: 'Claymore', category: 'attacker_gadget' },
@@ -356,9 +357,11 @@ const stickerTemplates = [
     { type: 'image', url: './img/gadget/StunGrenade.webp', alt: 'Stun Grenade', category: 'attacker_gadget' },
     { type: 'image', url: './img/gadget/EMP.webp', alt: 'EMP', category: 'attacker_gadget' },
     { type: 'image', url: 'https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/0114WqhzsMsnvaKc4FypkN/5ebb9b86e216a2d9e6b2ea01eb3346e8/Breaching-Rounds.png', alt: 'Breaching Rounds', category: 'attacker_gadget' },
+    { type: 'image', url: 'https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/3YaoPPUbFYeVSCemdj57EL/a4a4a8c0a935640f7d9a1d1ea82bc48c/Cluster-Charge.png', alt: 'Cluster Charge', category: 'attacker_gadget' },
     { type: 'image', url: 'https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/5ur3NZUGos3i2HR8f0HIzj/46cf23c97453ebfedeaa42a1088ff32f/Tactical-Crossbow.png', alt: 'Tactical Crossbow', category: 'attacker_gadget' },
+    { type: 'image', url: 'https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/1elqIEWJ6XsXKAbMNd0Cai/0b4c0591bad284d957e652cdae0b706b/KS79-Lifeline.png', alt: 'Lifeline', category: 'attacker_gadget' },
     { type: 'image', url: './img/gadget/Nomad.webp', alt: 'Nomad', category: 'attacker_gadget' },
-    { type: 'image', url: './img/gadget/TraxStingers.webp', alt: 'Trax Stingers', category: 'attacker_gadget' },
+    { type: 'image', url: 'https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/QGVvmZeZ91FC2X4mvMzgn/601fa45e635872aea31f15ffebb9c366/Trax-Stingers.png', alt: 'Trax Stingers', category: 'attacker_gadget' },
     { type: 'image', url: './img/gadget/Zero.webp', alt: 'Zero', category: 'attacker_gadget' },
     { type: 'image', url: 'https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/1z7eSI5D8IRIOHi0PJu4yq/3c4a273098a840957a248583f73fa8ff/r6s-operator-ability-flores.png', alt: 'Flores', category: 'attacker_gadget' },
     { type: 'image', url: 'https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/71VBmyDtBAx788WnNJfEgo/1e6d78a81f8dc381bf4244b87970038f/r6s-operator-ability-osa.png', alt: 'Osa', category: 'attacker_gadget' },
@@ -378,6 +381,7 @@ const stickerTemplates = [
     { type: 'image', url: './img/gadget/Mute.webp', alt: 'Mute', category: 'defender_gadget' },
     { type: 'image', url: 'https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/29N9nMqB8ZZxGCPz128ccD/439cb1fcb2f6d5385378cf073a5fbc30/Armor-Panel.png', alt: 'Armor Panel', category: 'defender_gadget' },
     { type: 'image', url: 'https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/FLgwGbMiZTrWcK62KxPq8/d4e584420f85fa61c09e5e57e12d9dd9/Entry-Denial-Device.png', alt: 'Entry Denial Device', category: 'defender_gadget' },
+    { type: 'image', url: 'https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/37wX75QnY7XA6KbjM4aF5n/0ab116d398cf71463e11d43913818ec1/Shumikha-Launcher.png', alt: 'Shumikha Launcher', category: 'defender_gadget' },
     { type: 'image', url: './img/gadget/Jager.webp', alt: 'Jager', category: 'defender_gadget' },
     { type: 'image', url: './img/gadget/Bandit.webp', alt: 'Bandit', category: 'defender_gadget' },
     { type: 'image', url: './img/gadget/Frost.webp', alt: 'Frost', category: 'defender_gadget' },
@@ -399,7 +403,7 @@ const stickerTemplates = [
     { type: 'image', url: './img/gadget/Azami.webp', alt: 'Azami', category: 'defender_gadget' },
     { type: 'image', url: './img/gadget/Fenrir.webp', alt: 'Fenrir', category: 'defender_gadget' },
     { type: 'image', url: './img/gadget/Tubarao.webp', alt: 'Tubarao', category: 'defender_gadget' },
-    { type: 'image', url: 'https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/56v8dxuabTfIHtPSmQX7AJ/9079454089effc91c685d7e759728797/r6s-operator-ability-skopos.png', alt: 'Skopos', category: 'defender_gadget' },
+    { type: 'image', url: 'https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/56v8dxuabTfIHtPSmQX7AJ/9079454089effc91c685d7e759728797/r6s-operator-ability-skopos.png', alt: 'Skopos', category: 'defender_gadget' }
 ];
 
 function populateStickerTray() {
