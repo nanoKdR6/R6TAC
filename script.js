@@ -596,7 +596,7 @@ function populateStickerTray() {
         if (stickerData.shortcutKey) {
             const keySpan = document.createElement('span');
             keySpan.textContent = stickerData.shortcutKey;
-            keySpan.classList.add('absolute', 'bottom-0.5', 'right-0.5', 'text-xxs', 'font-bold', 'bg-black', 'bg-opacity-70', 'text-white', 'px-1', 'rounded-sm');
+            keySpan.classList.add('absolute', 'bottom-0.5', 'right-0.5', 'text-xs', 'font-bold', 'bg-black', 'bg-opacity-50', 'text-white', 'px-1', 'rounded-sm');
             stickerDiv.appendChild(keySpan);
         }
 
