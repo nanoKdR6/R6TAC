@@ -542,7 +542,7 @@ function populateStickerTray() {
         stickerDiv.classList.add('sticker-item', 'flex', 'items-center', 'justify-center', 'text-sm', 'font-bold');
         stickerDiv.setAttribute('draggable', 'true');
 
-        let currentDroppedSize;
+        let currentDroppedSize = DEFAULT_SIZE;
 
         // Determine sizes based on category
         if (stickerData.category === 'attacker' || stickerData.category === 'defender') {
