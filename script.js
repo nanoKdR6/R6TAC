@@ -788,6 +788,9 @@ canvasContainer.addEventListener('drop', (e) => {
             const file = files[0];
             const reader = new FileReader();
             reader.onload = (event) => {
+                // Clear the selected map when a custom image is uploaded
+                templateSelect.value = 'placeholder';
+                loadMapAndFloor('placeholder', 0); // Also load the placeholder map to reflect the cleared state
                 templateImage.src = event.target.result;
                 showInfoMessage('Image loaded!');
             };
@@ -878,8 +881,11 @@ imageUploadInput.addEventListener('change', (e) => {
     if (file && file.type.startsWith('image/')) {
         const reader = new FileReader();
         reader.onload = (event) => {
+            // Clear the selected map when a custom image is uploaded
+            templateSelect.value = 'placeholder';
+            loadMapAndFloor('placeholder', 0); // Also load the placeholder map to reflect the cleared state
             templateImage.src = event.target.result;
-            showInfoMessage('Image loaded');
+            showInfoMessage('Image loaded!');
         };
         reader.readAsDataURL(file);
     } else {
