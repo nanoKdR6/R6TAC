@@ -29,6 +29,12 @@ const confirmationMessage = document.getElementById('confirmationMessage');
 const confirmYesBtn = document.getElementById('confirmYes');
 const confirmNoBtn = document.getElementById('confirmNo');
 
+// floor controls
+const floorControls = document.getElementById('floorControls');
+const prevFloorBtn = document.getElementById('prevFloorBtn');
+const nextFloorBtn = document.getElementById('nextFloorBtn');
+const currentFloorNameSpan = document.getElementById('currentFloorName');
+
 let isDrawing = false;
 let isErasing = false;
 let isArrowToolActive = false; // State for arrow tool
@@ -51,6 +57,10 @@ let pendingResetAction = null;
 
 // Stores the current canvas state for clearing temporary drawings (like arrow previews)
 let canvasState = null;
+
+// Map and floor tracking variables
+let currentMapId = 'placeholder'; // Stores the ID of the currently selected map group
+let currentFloorIndex = 0; // Stores the index of the current floor for that map
 
 // --- Utility Functions ---
 
@@ -773,137 +783,194 @@ imageUploadInput.addEventListener('change', (e) => {
     }
 });
 
-// --- Map Dropdown ---
+// --- Map and Floor Selection ---
 
-const templates = {
-    'placeholder': { name: '-- Select a Map --', url: 'https://placehold.co/900x506/e0e0e0/555555?text=Load+Image+or+Drag+Here' },
-    map1: {
-        name: 'Bank 2F',
-        url: './img/map/bank_2f.webp'
+const maps = {
+    'placeholder': {
+        name: '-- Select a Map --',
+        floors: [{ name: 'Placeholder', url: 'https://placehold.co/900x506/e0e0e0/555555?text=Load+Image+or+Drag+Here' }],
+        defaultFloorIndex: 0
     },
-    map2: {
-        name: 'Bank 1F',
-        url: './img/map/bank_1f.webp'
+    'bank': {
+        name: 'Bank',
+        floors: [
+            { name: '2F', url: './img/map/bank_2f.webp' },
+            { name: '1F', url: './img/map/bank_1f.webp' },
+            { name: 'B1', url: './img/map/bank_b1.webp' },
+        ],
+        defaultFloorIndex: 0 // Start at 2F
     },
-    map3: {
-        name: 'Bank B1',
-        url: './img/map/bank_b1.webp'
+    'border': {
+        name: 'Border',
+        floors: [
+            { name: '2F', url: './img/map/border_2f.webp' },
+            { name: '1F', url: './img/map/border_1f.webp' },
+        ],
+        defaultFloorIndex: 0
     },
-    map4: {
-        name: 'Border 2F',
-        url: './img/map/border_2f.webp'
+    'chalet': {
+        name: 'Chalet',
+        floors: [
+            { name: '2F', url: './img/map/chalet_2f.webp' },
+            { name: '1F', url: './img/map/chalet_1f.webp' },
+            { name: 'B1', url: './img/map/chalet_b1.webp' },
+        ],
+        defaultFloorIndex: 0
     },
-    map5: {
-        name: 'Border 1F',
-        url: './img/map/border_1f.webp'
+    'clubhouse': {
+        name: 'Clubhouse',
+        floors: [
+            { name: '2F', url: './img/map/club_2f.webp' },
+            { name: '1F', url: './img/map/club_1f.webp' },
+            { name: 'B1', url: './img/map/club_b1.webp' },
+        ],
+        defaultFloorIndex: 0
     },
-    map6: {
-        name: 'Chalet 2F',
-        url: './img/map/chalet_2f.webp'
+    'consulate': {
+        name: 'Consulate',
+        floors: [
+            { name: '2F', url: './img/map/cons_2f.webp' },
+            { name: '1F', url: './img/map/cons_1f.webp' },
+            { name: 'B1', url: './img/map/cons_b1.webp' },
+        ],
+        defaultFloorIndex: 0
     },
-    map7: {
-        name: 'Chalet 1F',
-        url: './img/map/chalet_1f.webp'
+    'kafe': {
+        name: 'Kafe Dostoyevsky',
+        floors: [
+            { name: '3F', url: './img/map/kafe_3f.webp' },
+            { name: '2F', url: './img/map/kafe_2f.webp' },
+            { name: '1F', url: './img/map/kafe_1f.webp' },
+        ],
+        defaultFloorIndex: 0
     },
-    map8: {
-        name: 'Chalet B1',
-        url: './img/map/chalet_b1.webp'
+    'lair': {
+        name: 'Lair',
+        floors: [
+            { name: '2F', url: './img/map/lair_2f.webp' },
+            { name: '1F', url: './img/map/lair_1f.webp' },
+            { name: 'B1', url: './img/map/lair_b1.webp' },
+        ],
+        defaultFloorIndex: 0
     },
-    map9: {
-        name: 'Clubhouse 2F',
-        url: './img/map/club_2f.webp'
+    'nighthavenlabs': {
+        name: 'Nighthaven Labs',
+        floors: [
+            { name: '2F', url: './img/map/labs_2f.webp' },
+            { name: '1F', url: './img/map/labs_1f.webp' },
+            { name: 'B1', url: './img/map/labs_b1.webp' },
+        ],
+        defaultFloorIndex: 0
     },
-    map10: {
-        name: 'Clubhouse 1F',
-        url: './img/map/club_1f.webp'
+    'skyscraper': {
+        name: 'Skyscraper',
+        floors: [
+            { name: '2F', url: './img/map/sky_2f.webp' },
+            { name: '1F', url: './img/map/sky_1f.webp' },
+        ],
+        defaultFloorIndex: 0
     },
-    map11: {
-        name: 'Clubhouse B1',
-        url: './img/map/club_b1.webp'
-    },
-    map12: {
-        name: 'Consulate 2F',
-        url: './img/map/cons_2f.webp'
-    },
-    map13: {
-        name: 'Consulate 1F',
-        url: './img/map/cons_1f.webp'
-    },
-    map14: {
-        name: 'Consulate B1',
-        url: './img/map/cons_b1.webp'
-    },
-    map15: {
-        name: 'Kafe 3F',
-        url: './img/map/kafe_3f.webp'
-    },
-    map16: {
-        name: 'Kafe 2F',
-        url: './img/map/kafe_2f.webp'
-    },
-    map17: {
-        name: 'Kafe 1F',
-        url: './img/map/kafe_1f.webp'
-    },
-    map18: {
-        name: 'Lair 2F',
-        url: './img/map/lair_2f.webp'
-    },
-    map19: {
-        name: 'Lair 1F',
-        url: './img/map/lair_1f.webp'
-    },
-    map20: {
-        name: 'Lair B1',
-        url: './img/map/lair_b1.webp'
-    },
-    map21: {
-        name: 'Nighthaven Labs 2F',
-        url: './img/map/labs_2f.webp'
-    },
-    map22: {
-        name: 'Nighthaven Labs 1F',
-        url: './img/map/labs_1f.webp'
-    },
-    map23: {
-        name: 'Nighthaven Labs B1',
-        url: './img/map/labs_b1.webp'
-    },
-    map24: {
-        name: 'Skyscraper 2F',
-        url: './img/map/sky_2f.webp'
-    },
-    map25: {
-        name: 'Skyscraper 1F',
-        url: './img/map/sky_1f.webp'
-    }
 };
 
 /**
- * Populates the template dropdown with options.
+ * Populates the template dropdown with map names.
  */
 function populateTemplateDropdown() {
-    templateSelect.innerHTML = ''; // Clear existing options
-    for (const id in templates) {
+    templateSelect.innerHTML = '';
+    // Add a default "Select a map" option
+    const defaultOption = document.createElement('option');
+    defaultOption.value = 'placeholder';
+    defaultOption.textContent = maps['placeholder'].name;
+    templateSelect.appendChild(defaultOption);
+
+    for (const id in maps) {
+        if (id === 'placeholder') continue;
         const option = document.createElement('option');
         option.value = id;
-        option.textContent = templates[id].name;
+        option.textContent = maps[id].name;
         templateSelect.appendChild(option);
     }
-    // Set the initial selection and load the corresponding image
-    templateSelect.value = 'placeholder'; // Default to the placeholder
-    templateImage.src = templates['placeholder'].url;
+    // Set initial selection and load corresponding image and floor controls
+    templateSelect.value = 'placeholder';
+    loadMapAndFloor('placeholder', 0);
 }
 
-// Event listener for template dropdown change
+/**
+ * Loads a specific map and floor, updates the image and floor controls.
+ * @param {string} mapId - The ID of the map to load.
+ * @param {number} floorIndex - The index of the floor to load within that map.
+ */
+function loadMapAndFloor(mapId, floorIndex) {
+    if (!maps[mapId]) {
+        console.error(`Map ID "${mapId}" not found.`);
+        return;
+    }
+    const map = maps[mapId];
+    if (floorIndex < 0 || floorIndex >= map.floors.length) {
+        console.error(`Floor index ${floorIndex} out of bounds for map "${mapId}".`);
+        return;
+    }
+
+    currentMapId = mapId;
+    currentFloorIndex = floorIndex;
+
+    templateImage.src = map.floors[currentFloorIndex].url;
+    updateFloorDisplay();
+    updateFloorButtonsState();
+}
+
+/**
+ * Updates the text display for the current floor.
+ */
+function updateFloorDisplay() {
+    if (maps[currentMapId] && maps[currentMapId].floors[currentFloorIndex]) {
+        currentFloorNameSpan.textContent = maps[currentMapId].floors[currentFloorIndex].name;
+    } else {
+        currentFloorNameSpan.textContent = '--';
+    }
+}
+
+/**
+ * Updates the enabled/disabled state of the floor switching buttons.
+ */
+function updateFloorButtonsState() {
+    const map = maps[currentMapId];
+    if (!map || map.floors.length <= 1) {
+        prevFloorBtn.disabled = true;
+        nextFloorBtn.disabled = true;
+        floorControls.classList.add('hidden');
+    } else {
+        floorControls.classList.remove('hidden');
+        prevFloorBtn.disabled = (currentFloorIndex === 0);
+        nextFloorBtn.disabled = (currentFloorIndex === map.floors.length - 1);
+    }
+}
+
+// Event listener for map dropdown change
 templateSelect.addEventListener('change', (e) => {
-    const selectedTemplateId = e.target.value;
-    const selectedTemplate = templates[selectedTemplateId];
-    if (selectedTemplate) {
-        templateImage.src = selectedTemplate.url;
-        // showInfoMessage(`Image "${selectedTemplate.name}" loaded!`);
+    const selectedMapId = e.target.value;
+    const map = maps[selectedMapId];
+    if (map) {
+        loadMapAndFloor(selectedMapId, map.defaultFloorIndex);
     }
 });
 
-// Initialize the template dropdown when the script loads
+// Event listeners for floor switching buttons
+prevFloorBtn.addEventListener('click', () => {
+    if (currentFloorIndex > 0) {
+        loadMapAndFloor(currentMapId, currentFloorIndex - 1);
+    }
+});
+
+nextFloorBtn.addEventListener('click', () => {
+    const map = maps[currentMapId];
+    if (map && currentFloorIndex < map.floors.length - 1) {
+        loadMapAndFloor(currentMapId, currentFloorIndex + 1);
+    }
+});
+
+
+// Initialize the template dropdown and map display when the script loads
 populateTemplateDropdown();
+updateFloorDisplay();
+updateFloorButtonsState();
