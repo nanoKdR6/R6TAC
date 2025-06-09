@@ -209,7 +209,7 @@ function draw(e) {
             ctx.putImageData(canvasState, 0, 0);
         }
         // Draw new temporary arrow preview
-        drawArrowhead(ctx, arrowStartX, arrowStartY, currentCanvasX, currentCanvasY, 15); // 15 is arbitrary arrow head size
+        drawArrowhead(ctx, arrowStartX, arrowStartY, currentCanvasX, currentCanvasY, 10); // 15 is arbitrary arrow head size
     } else { // Pen or Eraser
         ctx.lineTo(currentCanvasX, currentCanvasY);
         ctx.stroke();
@@ -242,7 +242,7 @@ function stopDrawing(e) {
             ctx.putImageData(canvasState, 0, 0);
         }
         // Draw the final arrow with an arrowhead
-        drawArrowhead(ctx, arrowStartX, arrowStartY, finalX, finalY, 15);
+        drawArrowhead(ctx, arrowStartX, arrowStartY, finalX, finalY, 10);
     }
 
     isDrawing = false;
@@ -296,30 +296,31 @@ drawingCanvas.addEventListener('touchcancel', cancelDrawing); // Use cancelDrawi
 // --- Tool Controls ---
 
 function setActiveTool(toolBtn, isPen, isEraser, isArrow) {
-    // Remove active styles from all buttons
-    penToolBtn.classList.remove('bg-green-600');
-    eraserToolBtn.classList.remove('bg-yellow-600');
-    arrowToolBtn.classList.remove('bg-blue-600');
+    // List all tool buttons to iterate
+    const allToolButtons = [penToolBtn, eraserToolBtn, arrowToolBtn];
 
-    // Reset all to default (non-active) color first
-    penToolBtn.classList.add('bg-green-500');
-    eraserToolBtn.classList.add('bg-yellow-500');
-    arrowToolBtn.classList.add('bg-blue-500');
+    // Remove all specific active background colors and borders from all buttons
+    allToolButtons.forEach(btn => {
+        btn.classList.remove(
+            'bg-green-600', 'bg-blue-600', 'bg-yellow-600'
+        );
+        // Add the base inactive background color and transparent border
+        btn.classList.add('bg-gray-800');
+    });
 
-    // Apply active color to the selected tool
+    // Apply active styles to the selected tool
     if (toolBtn) {
-        toolBtn.classList.remove(
-            toolBtn.classList.contains('bg-green-500') ? 'bg-green-500' :
-            toolBtn.classList.contains('bg-yellow-500') ? 'bg-yellow-500' :
-            toolBtn.classList.contains('bg-blue-500') ? 'bg-blue-500' :
-            ''
-        );
-        toolBtn.classList.add(
-            isPen ? 'bg-green-600' :
-            isEraser ? 'bg-yellow-600' :
-            isArrow ? 'bg-blue-600' :
-            ''
-        );
+        // Remove inactive background and transparent border from selected button
+        toolBtn.classList.remove('bg-gray-800');
+        
+        // Add the specific active background color and matching border
+        if (isPen) {
+            toolBtn.classList.add('bg-green-600');
+        } else if (isArrow) {
+            toolBtn.classList.add('bg-blue-600');
+        } else if (isEraser) {
+            toolBtn.classList.add('bg-yellow-600');
+        }
     }
 
     isDrawing = false; // Ensure drawing is reset when changing tools
@@ -869,7 +870,6 @@ document.addEventListener('keydown', (e) => {
         showInfoMessage('Eraser tool selected.');
     }
 });
-
 
 // --- Image Upload for Template ---
 
