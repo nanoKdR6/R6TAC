@@ -200,3 +200,9 @@ input[type="range"]::-moz-range-thumb {
 .confirmation-modal-content .button-group button.cancel:hover {
     background-color: #64748b; /* Slate-500 */
 }
+
+/* Semi-opaque floor controls */
+.floor-controls-overlay {
+    background-color: rgba(45, 55, 72, 0.7); /* bg-gray-800 with 70% opacity */
+    backdrop-filter: blur(5px); /* Optional: adds a blur effect behind the element */
+}

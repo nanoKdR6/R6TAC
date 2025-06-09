@@ -49,15 +49,15 @@
                         <input type="range" id="penThickness" min="1" max="20" value="3" class="w-full">
                         <span id="thicknessValue" class="text-sm text-gray-400 mt-1 block text-right">3px</span>
                     </div>
-                    <div class="flex gap-2 overflow-y-auto">
+                    <div class="grid grid-cols-3 gap-2 overflow-y-auto">
                         <button id="penToolBtn" class="flex-1 bg-green-500 text-white py-2 px-4 rounded-md shadow-md hover:bg-green-600 transition duration-300 ease-in-out">
-                            <i class="mdi mdi-brush text-lg"></i>
+                            <i class="mdi mdi-brush text-lg"></i> <span class="text-xs ml-1">(B)</span>
                         </button>
                         <button id="arrowToolBtn" class="flex-1 bg-blue-500 text-white py-2 px-4 rounded-md shadow-md hover:bg-blue-600 transition duration-300 ease-in-out">
-                            <i class="mdi mdi-arrow-top-right text-lg"></i>
+                            <i class="mdi mdi-arrow-top-right text-lg"></i> <span class="text-xs ml-1">(A)</span>
                         </button>
                         <button id="eraserToolBtn" class="flex-1 bg-yellow-500 text-white py-2 px-4 rounded-md shadow-md hover:bg-yellow-600 transition duration-300 ease-in-out">
-                            <i class="mdi mdi-eraser text-lg"></i>
+                            <i class="mdi mdi-eraser text-lg"></i> <span class="text-xs ml-1">(E)</span>
                         </button>
                     </div>
                 </div>
@@ -115,9 +115,9 @@
                 </div>
             </div>
 
-            <!-- Floor Controls (New Element) -->
+            <!-- Floor Controls -->
             <div id="floorControls" class="relative w-full text-right">
-                <div class="absolute top-0 p-2 flex items-center gap-2 bg-gray-800 rounded-br-lg rounded-tl-lg shadow-md z-10">
+                <div class="absolute top-0 p-2 flex items-center gap-2 rounded-br-lg rounded-tl-lg shadow-md z-10 floor-controls-overlay">
                     <button id="prevFloorBtn" class="bg-gray-700 text-gray-300 p-2 rounded-md hover:bg-gray-600 transition duration-200">
                         <i class="mdi mdi-arrow-left-drop-circle text-lg"></i>
                     </button>

@@ -8,7 +8,7 @@ const penThicknessInput = document.getElementById('penThickness');
 const thicknessValueSpan = document.getElementById('thicknessValue');
 const penToolBtn = document.getElementById('penToolBtn');
 const eraserToolBtn = document.getElementById('eraserToolBtn');
-const arrowToolBtn = document.getElementById('arrowToolBtn'); // New: Arrow tool button
+const arrowToolBtn = document.getElementById('arrowToolBtn');
 
 const resetDrawingBtn = document.getElementById('resetDrawingBtn');
 const resetIconsBtn = document.getElementById('resetIconsBtn');
@@ -62,6 +62,10 @@ let canvasState = null;
 let currentMapId = 'placeholder'; // Stores the ID of the currently selected map group
 let currentFloorIndex = 0; // Stores the index of the current floor for that map
 
+// Sticker placement variables
+let lastKnownMouseX = 0;
+let lastKnownMouseY = 0;
+
 // --- Utility Functions ---
 
 /**
@@ -108,6 +112,10 @@ function resizeCanvas() {
     // Reapply drawing settings
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
+
+    // Initialize lastKnownMouseX and Y to the center of the canvas
+    lastKnownMouseX = drawingCanvas.width / 2;
+    lastKnownMouseY = drawingCanvas.height / 2;
 }
 
 // Initial canvas resize and add event listener for window resize
@@ -139,23 +147,23 @@ function drawArrowhead(context, fromX, fromY, toX, toY, arrowHeadSize) {
     context.stroke();
 }
 
-
 /**
- * Starts the drawing/erasing/arrow operation.
+ * Handles the start of a drawing/sticker interaction.
  * @param {MouseEvent|TouchEvent} e - The event.
  */
 function startDrawing(e) {
-    // Get mouse/touch coordinates relative to the canvas
     const rect = drawingCanvas.getBoundingClientRect();
-    const clientX = e.clientX || e.touches[0].clientX;
-    const clientY = e.clientY || e.touches[0].clientY;
+    const clientX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : undefined);
+    const clientY = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : undefined);
+
+    if (clientX === undefined || clientY === undefined) return;
 
     const currentCanvasX = clientX - rect.left;
     const currentCanvasY = clientY - rect.top;
 
-    // Check if the event target is the canvas itself or a sticker
-    if (e.target !== drawingCanvas) {
-        isDrawing = false; // Prevent drawing if clicking on a sticker
+    // If clicking on an existing dropped sticker, prevent drawing tools from activating
+    if (e.target.classList.contains('dropped-sticker')) {
+        isDrawing = false;
         return;
     }
 
@@ -265,7 +273,6 @@ function cancelDrawing() {
     }
 }
 
-
 // Add drawing event listeners to the drawing canvas
 drawingCanvas.addEventListener('mousedown', startDrawing);
 drawingCanvas.addEventListener('mousemove', draw);
@@ -289,27 +296,31 @@ drawingCanvas.addEventListener('touchcancel', cancelDrawing); // Use cancelDrawi
 // --- Tool Controls ---
 
 function setActiveTool(toolBtn, isPen, isEraser, isArrow) {
-    penToolBtn.classList.remove('bg-green-600', 'bg-green-500'); // Remove both potential green classes
-    eraserToolBtn.classList.remove('bg-yellow-600', 'bg-yellow-500'); // Remove both potential yellow classes
-    arrowToolBtn.classList.remove('bg-blue-600', 'bg-blue-500'); // Remove both potential blue classes
+    // Remove active styles from all buttons
+    penToolBtn.classList.remove('bg-green-600');
+    eraserToolBtn.classList.remove('bg-yellow-600');
+    arrowToolBtn.classList.remove('bg-blue-600');
 
-    // Set default color for all buttons
+    // Reset all to default (non-active) color first
     penToolBtn.classList.add('bg-green-500');
     eraserToolBtn.classList.add('bg-yellow-500');
     arrowToolBtn.classList.add('bg-blue-500');
 
-    // Apply active class to the selected tool
-    if (isPen) {
-        penToolBtn.classList.remove('bg-green-500');
-        penToolBtn.classList.add('bg-green-600');
-    } else if (isEraser) {
-        eraserToolBtn.classList.remove('bg-yellow-500');
-        eraserToolBtn.classList.add('bg-yellow-600');
-    } else if (isArrow) {
-        arrowToolBtn.classList.remove('bg-blue-500');
-        arrowToolBtn.classList.add('bg-blue-600');
+    // Apply active color to the selected tool
+    if (toolBtn) {
+        toolBtn.classList.remove(
+            toolBtn.classList.contains('bg-green-500') ? 'bg-green-500' :
+            toolBtn.classList.contains('bg-yellow-500') ? 'bg-yellow-500' :
+            toolBtn.classList.contains('bg-blue-500') ? 'bg-blue-500' :
+            ''
+        );
+        toolBtn.classList.add(
+            isPen ? 'bg-green-600' :
+            isEraser ? 'bg-yellow-600' :
+            isArrow ? 'bg-blue-600' :
+            ''
+        );
     }
-
 
     isDrawing = false; // Ensure drawing is reset when changing tools
     isErasing = isEraser;
@@ -319,6 +330,11 @@ function setActiveTool(toolBtn, isPen, isEraser, isArrow) {
     arrowStartY = 0;
     arrowEndX = 0;
     arrowEndY = 0;
+
+    // When tool changes, clear any active sticker for keyboard placement
+    document.querySelectorAll('.selected-sticker-in-tray').forEach(el => {
+        el.classList.remove('selected-sticker-in-tray');
+    });
 }
 
 penColorInput.addEventListener('input', (e) => {
@@ -361,8 +377,12 @@ resetDrawingBtn.addEventListener('click', () => {
 
 resetIconsBtn.addEventListener('click', () => {
     showConfirmation('Are you sure you want to remove all icons?', () => {
-        droppedStickers.forEach(sticker => sticker.remove());
-        droppedStickers = []; // Clear the array
+        droppedStickers.forEach(sticker => {
+            if (sticker.classList.contains('dropped-sticker')) {
+                sticker.remove();
+            }
+        });
+        droppedStickers = [];
         showInfoMessage('All icons removed!');
     });
 });
@@ -370,7 +390,11 @@ resetIconsBtn.addEventListener('click', () => {
 resetAllBtn.addEventListener('click', () => {
     showConfirmation('Are you sure you want to reset everything (drawing and icons)?', () => {
         ctx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
-        droppedStickers.forEach(sticker => sticker.remove());
+        droppedStickers.forEach(sticker => {
+            if (sticker.classList.contains('dropped-sticker')) {
+                sticker.remove();
+            }
+        });
         droppedStickers = [];
         showInfoMessage('All cleared: drawing and icons removed!');
     });
@@ -391,8 +415,7 @@ confirmNoBtn.addEventListener('click', () => {
     showInfoMessage('Reset cancelled.');
 });
 
-
-// --- Sticker Drag and Drop ---
+// --- Sticker Drag and Drop & Keyboard Placement ---
 
 let draggedStickerOriginal = null; // Represents the sticker being dragged from the tray
 
@@ -479,9 +502,9 @@ const stickerTemplates = [
     { type: 'image', url: 'https://r6operators.marcopixel.eu/icons/png/tubarao.png', alt: 'Tubarao', category: 'defender' },
     { type: 'image', url: 'https://r6operators.marcopixel.eu/icons/png/skopos.png', alt: 'Skopos', category: 'defender' },
     // Attacker Gadgets
-    { type: 'image', url: './img/gadget/Drone.webp', alt: 'Drone', category: 'attacker_gadget' },
-    { type: 'image', url: './img/gadget/HardBreach.webp', alt: 'Hard Breach', category: 'attacker_gadget' },
-    { type: 'image', url: './img/gadget/Rotation.webp', alt: 'Rotation', category: 'attacker_gadget' },
+    { type: 'image', url: './img/gadget/Drone.webp', alt: 'Drone', category: 'attacker_gadget', shortcutKey: 'D' },
+    { type: 'image', url: './img/gadget/HardBreach.webp', alt: 'Hard Breach', category: 'attacker_gadget', shortcutKey: 'H' },
+    { type: 'image', url: './img/gadget/Rotation.webp', alt: 'Rotation', category: 'attacker_gadget', shortcutKey: 'R' },
     { type: 'image', url: './img/gadget/Defuser.webp', alt: 'Defuser', category: 'attacker_gadget' },
     { type: 'image', url: './img/gadget/BreachCharge.webp', alt: 'Breach Charge', category: 'attacker_gadget' },
     { type: 'image', url: 'https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/4T4H5EJgUxorucGVtU2pkm/74fef324b89c220ce6426e8097f915b9/Claymore.png', alt: 'Claymore', category: 'attacker_gadget' },
@@ -501,9 +524,9 @@ const stickerTemplates = [
     { type: 'image', url: 'https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/71VBmyDtBAx788WnNJfEgo/1e6d78a81f8dc381bf4244b87970038f/r6s-operator-ability-osa.png', alt: 'Osa', category: 'attacker_gadget' },
     { type: 'image', url: 'https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/16gy72yx3AMn6pNE6HJm11/096d33d454536a2da6e5f26bae01d9ff/r6s-operator-ability-rauora.png', alt: 'Rauora', category: 'attacker_gadget' },
     // Defender Gadgets
-    { type: 'image', url: './img/gadget/Rotation.webp', alt: 'Rotation', category: 'defender_gadget' },
-    { type: 'image', url: './img/gadget/Reinforcement.webp', alt: 'Reinforcement', category: 'defender_gadget' },
-    { type: 'image', url: './img/gadget/Barricade.webp', alt: 'Barricade', category: 'defender_gadget' },
+    { type: 'image', url: './img/gadget/Rotation.webp', alt: 'Rotation', category: 'defender_gadget', shortcutKey: 'R' },
+    { type: 'image', url: './img/gadget/Reinforcement.webp', alt: 'Reinforcement', category: 'defender_gadget', shortcutKey: 'F' },
+    { type: 'image', url: './img/gadget/Barricade.webp', alt: 'Barricade', category: 'defender_gadget', shortcutKey: 'C' },
     { type: 'image', url: './img/gadget/Barb.webp', alt: 'Barbed Wire', category: 'defender_gadget' },
     { type: 'image', url: 'https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/gZuOXvuTu2i8hQX0B6auy/259f379a6283bae618443d722a896f1a/Bulletproof_camera.png', alt: 'Bulletproof Camera', category: 'defender_gadget' },
     { type: 'image', url: './img/gadget/Shield.webp', alt: 'Shield', category: 'defender_gadget' },
@@ -549,7 +572,7 @@ function populateStickerTray() {
 
     stickerTemplates.forEach(stickerData => {
         const stickerDiv = document.createElement('div');
-        stickerDiv.classList.add('sticker-item', 'flex', 'items-center', 'justify-center', 'text-sm', 'font-bold');
+        stickerDiv.classList.add('sticker-item', 'flex', 'items-center', 'justify-center', 'text-sm', 'font-bold', 'relative');
         stickerDiv.setAttribute('draggable', 'true');
 
         let currentDroppedSize = DEFAULT_SIZE;
@@ -567,6 +590,14 @@ function populateStickerTray() {
         stickerDiv.style.backgroundImage = `url('${stickerData.url}')`;
         stickerDiv.dataset.imageUrl = stickerData.url;
         stickerDiv.dataset.stickerSource = 'tray'; // Identify as original from tray
+
+        // Add title for hover hint, including shortcut key if available
+        if (stickerData.shortcutKey) {
+            const keySpan = document.createElement('span');
+            keySpan.textContent = stickerData.shortcutKey;
+            keySpan.classList.add('absolute', 'bottom-0.5', 'right-0.5', 'text-xxs', 'font-bold', 'bg-black', 'bg-opacity-70', 'text-white', 'px-1', 'rounded-sm');
+            stickerDiv.appendChild(keySpan);
+        }
 
         stickerDiv.addEventListener('dragstart', (e) => {
             draggedStickerOriginal = stickerDiv;
@@ -679,7 +710,8 @@ function makeStickerDraggable(stickerElement) {
     });
 
     // Double-click to delete a sticker
-    stickerElement.addEventListener('dblclick', () => {
+    stickerElement.addEventListener('dblclick', (e) => {
+        e.stopPropagation();
         deleteSticker(stickerElement);
     });
 
@@ -690,6 +722,7 @@ function makeStickerDraggable(stickerElement) {
         const tapLength = currentTime - lastTap;
         if (tapLength < 300 && tapLength > 0) { // If two taps happen within 300ms
             e.preventDefault(); // Prevent accidental drag/zoom
+            e.stopPropagation();
             deleteSticker(stickerElement);
         }
         lastTap = currentTime;
@@ -708,7 +741,6 @@ function deleteSticker(stickerElement) {
     stickerElement.remove(); // Remove from DOM
     // showInfoMessage('Icon deleted!');
 }
-
 
 canvasContainer.addEventListener('dragover', (e) => {
     e.preventDefault(); // Allow drop
@@ -764,6 +796,80 @@ canvasContainer.addEventListener('drop', (e) => {
         }
     }
 });
+
+// Update lastKnownMouseX and Y when mouse moves over the canvas container
+canvasContainer.addEventListener('mousemove', (e) => {
+    const rect = canvasContainer.getBoundingClientRect();
+    lastKnownMouseX = e.clientX - rect.left;
+    lastKnownMouseY = e.clientY - rect.top;
+});
+
+// Update lastKnownMouseX and Y when touch moves over the canvas container
+canvasContainer.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 0) {
+        const rect = canvasContainer.getBoundingClientRect();
+        lastKnownMouseX = e.touches[0].clientX - rect.left;
+        lastKnownMouseY = e.touches[0].clientY - rect.top;
+    }
+}, { passive: true }); // Passive true because we're just reading position, not preventing default behavior
+
+// Centralized keydown listener for sticker placement and tool selection
+document.addEventListener('keydown', (e) => {
+    // Prevent default browser behavior for common shortcuts (e.g., F5 for refresh)
+    if (e.key === 'F' || e.key === 'R' || e.key === 'D' || e.key === 'H' || e.key === 'C' ||
+        e.key === 'B' || e.key === 'A' || e.key === 'E') {
+        e.preventDefault();
+    }
+
+    let stickerToPlace = null;
+
+    // Sticker placement shortcuts
+    if (e.code === 'KeyF') {
+        stickerToPlace = stickerTemplates.find(sticker => sticker.alt === 'Reinforcement' && sticker.category === 'defender_gadget');
+    } else if (e.code === 'KeyR') {
+        // Check both attacker and defender gadgets for 'Rotation' as it exists in both
+        stickerToPlace = stickerTemplates.find(sticker => sticker.alt === 'Rotation' && (sticker.category === 'attacker_gadget' || sticker.category === 'defender_gadget'));
+    } else if (e.code === 'KeyD' && !e.repeat) { // Add !e.repeat to prevent multiple drones on hold
+        stickerToPlace = stickerTemplates.find(sticker => sticker.alt === 'Drone' && sticker.category === 'attacker_gadget');
+    } else if (e.code === 'KeyH') {
+        stickerToPlace = stickerTemplates.find(sticker => sticker.alt === 'Hard Breach' && sticker.category === 'attacker_gadget');
+    } else if (e.code === 'KeyC') {
+        stickerToPlace = stickerTemplates.find(sticker => sticker.alt === 'Barricade' && sticker.category === 'defender_gadget');
+    }
+
+    if (stickerToPlace) {
+        const newSticker = document.createElement('div');
+        newSticker.classList.add('sticker-item', 'dropped-sticker');
+
+        const droppedSize = parseInt(stickerToPlace.droppedSize || DEFAULT_SIZE); // Use specific or default gadget size
+        newSticker.style.width = `${droppedSize}px`;
+        newSticker.style.height = `${droppedSize}px`;
+        newSticker.style.backgroundImage = `url('${stickerToPlace.url}')`;
+        newSticker.dataset.stickerType = stickerToPlace.type;
+        newSticker.dataset.imageUrl = stickerToPlace.url;
+
+        // Position the sticker at the last known mouse coordinates, centered
+        newSticker.style.left = `${lastKnownMouseX - droppedSize / 2}px`;
+        newSticker.style.top = `${lastKnownMouseY - droppedSize / 2}px`;
+
+        canvasContainer.appendChild(newSticker);
+        droppedStickers.push(newSticker);
+        makeStickerDraggable(newSticker);
+    }
+
+    // Tool selection shortcuts
+    if (e.code === 'KeyB') {
+        setActiveTool(penToolBtn, true, false, false);
+        showInfoMessage('Pen tool selected.');
+    } else if (e.code === 'KeyA') {
+        setActiveTool(arrowToolBtn, false, false, true);
+        showInfoMessage('Arrow tool selected.');
+    } else if (e.code === 'KeyE') {
+        setActiveTool(eraserToolBtn, false, true, false);
+        showInfoMessage('Eraser tool selected.');
+    }
+});
+
 
 // --- Image Upload for Template ---
 
