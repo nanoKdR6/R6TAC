@@ -8,12 +8,13 @@ This is a personal tactical board application designed to assist Rainbow Six Sie
 
 ## Features
 
-* **Interactive Canvas:** Load custom map images or select from pre-defined map templates.
-* **Drawing Tools:** Utilize a pen and eraser with adjustable color and thickness for freehand drawing.
-* **Operator & Gadget Icons:** Drag and drop interactive icons for Attackers, Defenders, and their respective gadgets onto the tactical map.
-    * **Repositioning & Deletion:** Easily move icons around the map or remove them with a double-click/double-tap.
-* **Reset Options:** Quickly clear drawings, icons, or both.
-* **Responsive Design:** The application adjusts to different screen sizes.
+* **Interactive Canvas:** Load custom map images, select from a library of pre-defined map templates, and navigate between different floors of multi-level maps.
+* **Drawing Tools:** Utilize a pen, eraser, and arrow tool with adjustable color and thickness for precise tactical markings.
+* **Operator & Gadget Icons:** Drag and drop interactive icons for Attackers, Defenders, and their gadgets onto the map.
+    * **Quick Placement:** Place common gadgets instantly using keyboard shortcuts (e.g., 'F' for Reinforcement, 'R' for Rotation, 'D' for Drone, 'H' for Hard Breach, 'C' for Barricade).
+    * **Repositioning & Deletion:** Easily move placed icons, or remove them with a double-click/double-tap.
+* **Reset Options:** Quickly clear all drawings, all placed icons, or reset the entire board.
+* **Responsive Design:** The application provides an optimal viewing and interaction experience across various screen sizes and devices.
 
 ## Technologies Used
 
