@@ -523,6 +523,7 @@ const stickerTemplates = [
     { type: 'image', url: './img/gadget/Zero.webp', alt: 'Zero', category: 'attacker_gadget' },
     { type: 'image', url: 'https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/1z7eSI5D8IRIOHi0PJu4yq/3c4a273098a840957a248583f73fa8ff/r6s-operator-ability-flores.png', alt: 'Flores', category: 'attacker_gadget' },
     { type: 'image', url: 'https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/71VBmyDtBAx788WnNJfEgo/1e6d78a81f8dc381bf4244b87970038f/r6s-operator-ability-osa.png', alt: 'Osa', category: 'attacker_gadget' },
+    { type: 'image', url: './img/gadget/Grim.webp', alt: 'Grim', category: 'attacker_gadget' },
     { type: 'image', url: 'https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/16gy72yx3AMn6pNE6HJm11/096d33d454536a2da6e5f26bae01d9ff/r6s-operator-ability-rauora.png', alt: 'Rauora', category: 'attacker_gadget' },
     // Defender Gadgets
     { type: 'image', url: './img/gadget/Rotation.webp', alt: 'Rotation', category: 'defender_gadget', shortcutKey: 'R' },
