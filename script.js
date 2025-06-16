@@ -420,8 +420,8 @@ confirmNoBtn.addEventListener('click', () => {
 
 let draggedStickerOriginal = null; // Represents the sticker being dragged from the tray
 
-const DEFAULT_SIZE = 35; // Size for all stickers
-const OPERATOR_DROPPED_SIZE = 40; // Larger size for dropped operators
+const DEFAULT_SIZE = 30; // Size for all stickers
+const OPERATOR_DROPPED_SIZE = 35; // Size for dropped operators
 
 // Sticker data with categories for Attacker, Defender, Attacker Gadgets, Defender Gadgets
 const stickerTemplates = [
