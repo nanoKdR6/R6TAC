@@ -22,7 +22,6 @@ body {
 .canvas-container {
     position: relative;
     width: 100%;
-    max-width: 1600px; /* Increased max width for a bigger canvas */
     aspect-ratio: 16 / 9; /* Maintain aspect ratio */
     background-color: #3b455b; /* Darker background for canvas area */
     border-radius: 12px;
