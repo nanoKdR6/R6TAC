@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This is a personal tactical board application designed to assist Rainbow Six Siege coaches and analysts in their strategic planning. Developed by nanoKd, a Thai coach and analyst currently working for Soul's Heart Esport, this tool aims to streamline the process of visualizing and discussing in-game strategies. This project was inspired by [R6TAC_E36](https://github.com/s3min141/R6TAC).
+This is a personal tactical board application designed to assist Rainbow Six Siege coaches and analysts in their strategic planning. Developed by [nanoKd](https://liquipedia.net/rainbowsix/NanoKidz), a Thai coach and analyst currently working for Soul's Heart Esport, this tool aims to streamline the process of visualizing and discussing in-game strategies. This project was inspired by [R6TAC_E36](https://github.com/s3min141/R6TAC).
 
 **Please note:** This project is not affiliated with Ubisoft Entertainment. Tom Clancy’s, Rainbow Six, The Soldier Icon, Ubisoft, and the Ubisoft logo are trademarks of Ubisoft Entertainment.
 
@@ -35,4 +35,4 @@ As this is primarily a personal project, formal contributions are not actively s
 
 ---
 
-Built with passion by a nanoKd, with assistance from Google's Gemini.
+Built with passion by a [nanoKd](https://liquipedia.net/rainbowsix/NanoKidz), with assistance from Google's Gemini.
