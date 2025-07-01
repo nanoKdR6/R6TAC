@@ -340,7 +340,6 @@ function setActiveTool(toolBtn, isPen, isEraser, isArrow) {
 
 penColorInput.addEventListener('input', (e) => {
     currentPenColor = e.target.value;
-    setActiveTool(penToolBtn, true, false, false); // Switch to pen when color changes
 });
 
 penThicknessInput.addEventListener('input', (e) => {
